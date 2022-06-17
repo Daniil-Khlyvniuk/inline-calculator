@@ -27,7 +27,7 @@ export default class Stack {
 			this.#sizeDecrement()
 			return deletedItem
 		} else {
-			throw  new ReferenceError("Can not delete. Stack is empty")
+			throw  new RangeError("Can not delete. Stack is empty")
 		}
 	}
 
@@ -36,7 +36,7 @@ export default class Stack {
 		if (index >= 0) {
 			return this.#storage[index]
 		} else {
-			throw  new ReferenceError("Index out of stack")
+			throw  new RangeError("Index out of stack")
 		}
 	}
 

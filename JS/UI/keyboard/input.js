@@ -4,26 +4,51 @@ import { Validator } from "../../Validator/Validator.js"
 import { Error } from "../Error/Error.js"
 
 
-export const inputSymbol = (ev) => {
+export const handleClick = (ev) => {
 	Error.remove()
 	const inputEl = document.querySelector(".calculator__input")
-	inputEl.scrollTop = inputEl.scrollHeight;
+	inputEl.scrollTop = inputEl.scrollHeight
 
 	if (ev.target.classList.contains("key-result")) {
-		try {
-			if (Validator.isValid(inputEl.textContent)) {
-				const exprPRN = new Parser(inputEl.textContent).toRPN()
-				inputEl.textContent = Calculator.calc(exprPRN)
-			}
-		} catch (err) {
-			new Error({ message: "Expression is not valid" })
-		}
-	} else if (ev.target.classList.contains("clear")) {
-		inputEl.textContent = inputEl.textContent.slice(0, inputEl.textContent.length - 1)
-	} else if (ev.target.classList.contains("clearAll")) {
-		inputEl.textContent = ""
-	} else {
-		let symbol = ev.target.getAttribute("data")
-		inputEl.textContent += symbol
+		return getResult(inputEl)
 	}
+	if (ev.target.classList.contains("clear")) {
+		return clearOneSymbol(inputEl)
+	}
+	if (ev.target.classList.contains("clearAll")) {
+		return clearAll(inputEl, ev)
+	}
+
+	return input(inputEl, ev)
+}
+
+
+const getResult = (inputEl) => {
+	try {
+		if (Validator.isValid(inputEl.textContent)) {
+			const exprPRN = new Parser(inputEl.textContent).toRPN()
+			const res = Calculator.calc(exprPRN)
+			inputEl.textContent = Calculator.round(res)
+		}
+	} catch (err) {
+		new Error({ message: "Expression is not valid" })
+	}
+}
+
+const clearOneSymbol = (inputEl) => {
+	inputEl.textContent = inputEl.textContent.slice(0, inputEl.textContent.length - 1)
+}
+
+const clearAll = (inputEl, ev) => {
+	inputEl.textContent = ""
+	ev.target.style.animationName = "changeColor"
+
+	setTimeout(() => {
+		ev.target.style.animationName = ""
+	}, 251)
+}
+
+const input = (inputEl, ev) => {
+	const symbol = ev.target.getAttribute("data")
+	inputEl.textContent += symbol
 }

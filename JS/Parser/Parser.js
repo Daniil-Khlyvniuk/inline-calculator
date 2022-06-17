@@ -17,12 +17,15 @@ export class Parser {
 			"/": 3,
 			"^": 4
 		}
-		this.#infixExpression = expr.replaceAll(" ", "")
+		this.#infixExpression = Parser.#parseUnaryMinus(expr.replaceAll(" ", ""))
 	}
 
 	/**
 	 * RPN - [Reverse Polish
-	 * notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation)
+	 * notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation);
+	 *
+	 * parsing algorithm - [Shunting yard
+	 * algorithm](https://en.wikipedia.org/wiki/Shunting_yard_algorithm)
 	 */
 	toRPN() {
 		const inputEx = this.#infixExpression
@@ -50,6 +53,20 @@ export class Parser {
 			}
 		}
 		return this.#output
+	}
+
+	static #parseUnaryMinus(inputEx) {
+		inputEx = inputEx.split("")
+
+		for (let i = 0; i < inputEx.length; i++) {
+			const currSymbol = inputEx[i]
+			if (currSymbol !== "-") continue
+
+			if ((inputEx[i - 1] === "(") && (typeof +inputEx[i + 1] === "number")) {
+				inputEx.splice(i, 1, "0-")
+			}
+		}
+		return inputEx.join("").toString()
 	}
 
 	#setNumberToOutput(indexOfStartNumber, i) {
@@ -134,11 +151,14 @@ export class Parser {
 
 	#splitNumberFromExpression(indexOfStartNumber, currInd) {
 		let num = this.#infixExpression.slice(indexOfStartNumber, currInd)
-		num = num.replaceAll("(", "")
-		num = num.replaceAll(")", "")
-
-		if (num !== "") {
-			return parseFloat(num)
+		let res = ""
+		for (let el of num) {
+			if (typeof parseFloat(el) === "number" && !isNaN(parseFloat(el)) || el === ".") {
+				res += el
+			}
+		}
+		if (res !== "") {
+			return parseFloat(res)
 		}
 	}
 

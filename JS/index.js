@@ -1,5 +1,5 @@
-import { clickAnimation } from "./UI/keyboard/buttonClickAnumation.js"
-import { inputSymbol } from "./UI/keyboard/input.js"
+import { clickAnimation } from "./UI/keyboard/buttonClickAnimation.js"
+import { handleClick } from "./UI/keyboard/input.js"
 
 
 const calc = document.querySelector(".calculator")
@@ -7,17 +7,27 @@ const calc = document.querySelector(".calculator")
 calc.addEventListener("click", (ev) => {
 	if (ev.target.tagName !== "BUTTON") return
 	clickAnimation(ev)
-	inputSymbol(ev)
+	handleClick(ev)
 })
 
 console.log(
 	`
-	if you want to check result here, do not do this. 
-	Console calculates not well.
-	Try a real calculator.
-	For example:
-	https://www.desmos.com/scientific?lang=ru
-	or
-	https://www.google.com/search?q=calc+online&sxsrf=ALiCzsa4B2l5PmWilEaR_V2WrPChuXfGgQ%3A1655334029392&ei=jWSqYvPLF4uTrwTfp5zYAQ&oq=calc&gs_lcp=Cgdnd3Mtd2l6EAEYADIHCCMQsAMQJzIHCAAQRxCwAzIHCAAQRxCwAzIHCAAQRxCwAzIHCAAQRxCwAzIHCAAQRxCwAzIHCAAQRxCwAzIHCAAQRxCwAzIHCAAQsAMQQzIHCAAQsAMQQzIHCAAQsAMQQzILCAAQsAMQChABEEMyCggAEOQCELADGAEyCggAEOQCELADGAEyCggAEOQCELADGAEyEgguEMcBENEDEMgDELADEEMYAjISCC4QxwEQ0QMQyAMQsAMQQxgCMhIILhDHARCjAhDIAxCwAxBDGAJKBAhBGABKBAhGGAFQAFgAYPsFaAFwAXgAgAEAiAEAkgEAmAEAyAESwAEB2gEGCAEQARgJ2gEGCAIQARgI&sclient=gws-wiz
-	`
+	%c 
+Copy to the console for checking:
+%c2*(2 - (3 + 7))^2 => 2 * Math.pow((2-(3+7)), 2) === 128
+2^(-1/2) => Math.pow(2, (-1/2)) === 0.7071...
+0.2-(-0.9) => 0.2 - (-0.9) === 1.1`,
+
+
+	"font-weight: bold; " +
+	"font-size: 14px;" +
+	"color: #DD6969; ",
+
+	"font-size: 14px;" +
+	"color: #DD6969; " +
+	"background-color: #262626;" +
+	"padding: .5rem;" +
+	"margin: .5rem;" +
+	"border-radius: 10px;"+
+	"border: solid 1px #000;"
 )

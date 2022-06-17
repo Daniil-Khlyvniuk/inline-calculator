@@ -37,7 +37,7 @@ export default class Queue {
 			this.#oldIndexIncrement()
 			return deletedData
 		} else {
-			throw  new ReferenceError("Can not delete. Queue is empty")
+			throw  new RangeError("Can not delete. Queue is empty")
 		}
 	}
 
